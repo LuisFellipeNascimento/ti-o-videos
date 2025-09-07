@@ -4,6 +4,7 @@ import SuggestionForm from "@/Components/SuggestionForm"; // Importa o formulár
 export default function Welcome({
     auth,
     musicas, // Supondo que você passará as músicas do controller
+    sugestoes,
     laravelVersion,
     phpVersion,
 }) {
@@ -87,8 +88,45 @@ export default function Welcome({
                                 <p className="text-center text-gray-500 dark:text-gray-400 mt-10">Nenhuma música para exibir no momento.</p>
                             )}
 
+                            {/* Seção de Sugestões Recentes */}
+                            {sugestoes && sugestoes.data.length > 0 && (
+                                <div className="mb-12">
+                                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4 text-center">
+                                        Sugestões da Comunidade
+                                    </h2>
+                                    <div className="p-6 bg-white dark:bg-gray-800/50 rounded-lg shadow-md">
+                                        <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+                                            {sugestoes.data.map((sugestao) => (
+                                                <li key={sugestao.id} className="py-3">
+                                                    <a href={sugestao.youtube_link} target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 hover:underline truncate block">
+                                                        {sugestao.youtube_link}
+                                                    </a>
+                                                    <p className="text-sm text-gray-500 dark:text-gray-400">Sugerido em: {new Date(sugestao.created_at).toLocaleDateString()}</p>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        {/* Links de Paginação */}
+                                        <div className="mt-6 flex justify-between items-center">
+                                            {sugestoes.prev_page_url ? (
+                                                <Link href={sugestoes.prev_page_url} className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition">Anterior</Link>
+                                            ) : (
+                                                <span className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 rounded-md cursor-not-allowed">Anterior</span>
+                                            )}
+                                            <span className="text-sm text-gray-600 dark:text-gray-400">
+                                                Página {sugestoes.current_page} de {sugestoes.last_page}
+                                            </span>
+                                            {sugestoes.next_page_url ? (
+                                                <Link href={sugestoes.next_page_url} className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition">Próximo</Link>
+                                            ) : (
+                                                <span className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 rounded-md cursor-not-allowed">Próximo</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
                             {/* Seção de Sugestão de Música */}
-                            <div id="sugestoes" className="pt-8">
+                            <div id="sugestoes" className="pt-8 mb-12">
                                 <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4 text-center">
                                     Sugira uma música
                                 </h2>

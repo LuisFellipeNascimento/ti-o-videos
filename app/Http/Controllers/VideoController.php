@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sugestao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -12,9 +13,11 @@ class VideoController extends Controller
     public function index()
     {
         $musicas = $this->buscarVideosYouTube();
+        $sugestoes = Sugestao::latest()->paginate(3); // Pagina as sugestões, 3 por página
 
         return Inertia::render('Welcome', [
             'musicas' => $musicas,
+            'sugestoes' => $sugestoes,
             'auth' => [
                 'user' => auth()->user(),
             ],
