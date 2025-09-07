@@ -59,13 +59,13 @@ export default function Welcome({
 
                         <main className="mt-6">
                             {/* Seção Top 5 Músicas */}
-                            {musicas && musicas.data && musicas.data.length > 0 ? (
+                            {musicas && musicas.length > 0 ? (
                                 <div className="mb-12">
                                     <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4 text-center">
                                         As 5 mais tocadas
                                     </h2>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                        {musicas.data.slice(0, 5).map((musica) => (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+                                        {musicas.map((musica) => (
                                             <div key={musica.id} className="p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent rounded-lg shadow-md transition-all duration-250 hover:scale-[1.01]">
                                                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{musica.title}</h3>
                                                 <div className="aspect-w-16 aspect-h-9 mt-4">

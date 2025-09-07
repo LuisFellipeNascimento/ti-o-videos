@@ -31,4 +31,11 @@ return [
         ],
     ],
 
+    // c:\Users\Luis Fellipe\Documents\GitHub\ti-o-videos\config\services.php
+    
+        'youtube' => [
+            'api_key' => env('YOUTUBE_API_KEY'),
+        ],
+    
+
 ];

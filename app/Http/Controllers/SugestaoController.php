@@ -10,14 +10,32 @@ class SugestaoController extends Controller
 {
     public function store(Request $request)
     {
-        $request->validate([
-            'youtube_link' => ['required', 'url', 'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/'],
-        ]);
+        $request->validate(
+            [
+                'youtube_link' => [
+                    'bail',
+                    'required',
+                    'url',
+                    'max:255',
+                    // Aceita youtube.com/watch?v=..., youtu.be/..., youtube.com/shorts/...
+                    'regex:/^https?:\/\/(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/).+/i',
+                ],
+            ],
+            [
+                'youtube_link.required' => 'O link do YouTube é obrigatório.',
+                'youtube_link.url' => 'Informe um URL válido.',
+                'youtube_link.max' => 'O link do YouTube deve ter no máximo 255 caracteres.',
+                'youtube_link.regex' => 'O link do YouTube informado é inválido.',
+            ],
+            [
+                'youtube_link' => 'link do YouTube',
+            ]
+        );
 
         Sugestao::create([
-            'youtube_link' => $request->youtube_link,
+            'youtube_link' => $request->string('youtube_link')->trim(),
         ]);
 
-        return Redirect::back();
+        return Redirect::back()->with('success', 'Sugestão enviada com sucesso!');
     }
 }
