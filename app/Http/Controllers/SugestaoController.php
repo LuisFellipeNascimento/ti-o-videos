@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sugestao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class SugestaoController extends Controller
 {
@@ -37,5 +38,63 @@ class SugestaoController extends Controller
         ]);
 
         return Redirect::back()->with('success', 'Sugestão enviada com sucesso!');
+    }
+
+    /**
+     * Mostra o formulário para editar uma sugestão.
+     *
+     * @param  \App\Models\Sugestao  $sugestao
+     * @return \Inertia\Response
+     */
+    public function edit(Sugestao $sugestao)
+    {
+        return Inertia::render('Sugestoes/Edit', [
+            'sugestao' => $sugestao
+        ]);
+    }
+
+    /**
+     * Atualiza uma sugestão no banco de dados.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Sugestao  $sugestao
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, Sugestao $sugestao)
+    {
+        $request->validate([
+            'youtube_link' => [
+                'required',
+                'url',
+                'regex:/^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[a-zA-Z0-9_-]{11}$/'
+            ],
+            'status' => 'required|in:pendente,aprovado,rejeitado',
+        ], [
+            'youtube_link.required' => 'O link do YouTube é obrigatório.',
+            'youtube_link.url' => 'Por favor, insira uma URL válida.',
+            'youtube_link.regex' => 'O link deve ser um vídeo válido do YouTube.',
+            'status.required' => 'O status é obrigatório.',
+            'status.in' => 'O status selecionado é inválido.',
+        ]);
+
+        $sugestao->update([
+            'youtube_link' => $request->youtube_link,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('sugestoes.gerenciar')->with('success', 'Sugestão atualizada com sucesso!');
+    }
+
+    /**
+     * Remove uma sugestão do banco de dados.
+     *
+     * @param  \App\Models\Sugestao  $sugestao
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Sugestao $sugestao)
+    {
+        $sugestao->delete();
+
+        return redirect()->route('welcome')->with('success', 'Sugestão excluída com sucesso!');
     }
 }

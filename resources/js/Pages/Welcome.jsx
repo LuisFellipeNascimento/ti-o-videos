@@ -1,4 +1,4 @@
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import SuggestionForm from "@/Components/SuggestionForm"; // Importa o formulário
 
 export default function Welcome({
@@ -8,6 +8,16 @@ export default function Welcome({
     laravelVersion,
     phpVersion,
 }) {
+    const handleDelete = (sugestao) => {
+        if (
+            confirm(
+                `Tem certeza que deseja excluir a sugestão: "${sugestao.youtube_link}"?`
+            )
+        ) {
+            router.delete(route("sugestoes.destroy", sugestao.id));
+        }
+    };
+
     return (
         <>
             <Head title="Welcome" />
@@ -97,11 +107,29 @@ export default function Welcome({
                                     <div className="p-6 bg-white dark:bg-gray-800/50 rounded-lg shadow-md">
                                         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                                             {sugestoes.data.map((sugestao) => (
-                                                <li key={sugestao.id} className="py-3">
-                                                    <a href={sugestao.youtube_link} target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 hover:underline truncate block">
-                                                        {sugestao.youtube_link}
-                                                    </a>
-                                                    <p className="text-sm text-gray-500 dark:text-gray-400">Sugerido em: {new Date(sugestao.created_at).toLocaleDateString()}</p>
+                                                <li key={sugestao.id} className="py-3 flex justify-between items-center">
+                                                    <div className="flex-1 min-w-0">
+                                                        <a href={sugestao.youtube_link} target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 hover:underline truncate block">
+                                                            {sugestao.youtube_link}
+                                                        </a>
+                                                        <p className="text-sm text-gray-500 dark:text-gray-400">Sugerido em: {new Date(sugestao.created_at).toLocaleDateString()}</p>
+                                                    </div>
+                                                    {auth.user && (
+                                                        <div className="flex items-center space-x-4 ml-4">
+                                                            <Link
+                                                                href={route('sugestoes.edit', sugestao.id)}
+                                                                className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
+                                                            >
+                                                                Editar
+                                                            </Link>
+                                                            <button
+                                                                onClick={() => handleDelete(sugestao)}
+                                                                className="text-sm font-medium text-red-600 dark:text-red-400 hover:underline"
+                                                            >
+                                                                Excluir
+                                                            </button>
+                                                        </div>
+                                                    )}
                                                 </li>
                                             ))}
                                         </ul>
