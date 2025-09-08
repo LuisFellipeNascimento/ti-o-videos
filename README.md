@@ -80,8 +80,47 @@ php artisan make:seeder MusicaSeeder
 # Execute o Seeder (após adicionar a lógica a ele)
 php artisan db:seed --class=MusicaSeeder
 ```
+### 8. Configurar a Chave da API do YouTube
+A aplicação utiliza a YouTube Data API v3 para validar os links enviados pelos usuários no formulário de sugestões. Para que essa funcionalidade funcione corretamente, é necessário configurar uma chave de API no Google Cloud.
 
-### 7. Iniciar os Servidores
+Passo a passo para criar a chave da API:
+Acesse o Google Cloud Console https://console.cloud.google.com/
+
+Crie um novo projeto No topo da página, clique em “Selecionar projeto” → “Novo projeto”. Dê um nome ao projeto (ex: tiao-musicas) e clique em “Criar”.
+
+Ative a YouTube Data API v3
+
+No menu lateral, vá em APIs e serviços → Biblioteca
+
+Pesquise por “YouTube Data API v3”
+
+Clique nela e depois em Ativar
+
+Crie as credenciais da API
+
+Vá em APIs e serviços → Credenciais
+
+Clique em + Criar credenciais → Chave de API
+
+Uma chave será gerada automaticamente. Copie-a.
+
+Adicione a chave ao seu projeto Laravel No arquivo .env, insira:
+
+env
+YOUTUBE_API_KEY=sua_chave_aqui
+Configure o Laravel para usar essa chave No arquivo config/services.php, adicione:
+
+php
+'youtube' => [
+    'key' => env('YOUTUBE_API_KEY'),
+],
+Atualize o cache de configuração Execute o comando:
+
+bash
+php artisan config:cache
+⚠️ Se a chave não estiver configurada corretamente, a aplicação exibirá o erro: Chave da API do YouTube não configurada.
+
+### 8. Iniciar os Servidores
 
 Você precisa iniciar o servidor de desenvolvimento do Laravel e o compilador de assets do Vite (para o React).
 

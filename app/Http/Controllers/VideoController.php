@@ -45,7 +45,6 @@ class VideoController extends Controller
                 ->get('https://www.googleapis.com/youtube/v3/search', [
                     'part' => 'snippet',
                     'q' => 'Tião Carreiro e Pardinho musica',
-                    'q' => 'Tião Carreiro e Pardinho musica oficial',
                     'type' => 'video',
                     'order' => 'viewCount',
                     'maxResults' => 5,
