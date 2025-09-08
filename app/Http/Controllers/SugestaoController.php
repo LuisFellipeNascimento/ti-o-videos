@@ -66,13 +66,14 @@ class SugestaoController extends Controller
             'youtube_link' => [
                 'required',
                 'url',
-                'regex:/^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[a-zA-Z0-9_-]{11}$/'
+                // Aceita youtube.com/watch?v=..., youtu.be/..., youtube.com/shorts/... e ignora parâmetros extras
+                'regex:/^https?:\/\/(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/).+/i',
             ],
             'status' => 'required|in:pendente,aprovado,rejeitado',
         ], [
             'youtube_link.required' => 'O link do YouTube é obrigatório.',
             'youtube_link.url' => 'Por favor, insira uma URL válida.',
-            'youtube_link.regex' => 'O link deve ser um vídeo válido do YouTube.',
+            'youtube_link.regex' => 'O link do YouTube informado é inválido.',
             'status.required' => 'O status é obrigatório.',
             'status.in' => 'O status selecionado é inválido.',
         ]);
