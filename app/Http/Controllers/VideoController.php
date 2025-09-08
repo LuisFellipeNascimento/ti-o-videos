@@ -26,25 +26,6 @@ class VideoController extends Controller
         ]);
     }
 
-    public function store(Request $request)
-    {
-        // Validação do link enviado
-        $request->validate([
-            'youtube_url' => [
-                'required',
-                'url',
-                'regex:/^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[a-zA-Z0-9_-]{11}$/'
-            ]
-        ], [
-            'youtube_url.required' => 'O link do YouTube é obrigatório',
-            'youtube_url.url' => 'Digite uma URL válida',
-            'youtube_url.regex' => 'O link deve ser do YouTube'
-        ]);
-
-        // Aqui você pode salvar no banco ou processar a URL
-        return redirect()->back()->with('success', 'Sugestão enviada com sucesso!');
-    }
-
     /**
      * Busca os vídeos mais populares de Tião Carreiro e Pardinho no YouTube.
      *
@@ -63,7 +44,8 @@ class VideoController extends Controller
             $response = Http::withOptions(['verify' => false]) // apenas para teste local
                 ->get('https://www.googleapis.com/youtube/v3/search', [
                     'part' => 'snippet',
-                    'q' => 'Tião Carreiro e Pardinho',
+                    'q' => 'Tião Carreiro e Pardinho musica',
+                    'q' => 'Tião Carreiro e Pardinho musica oficial',
                     'type' => 'video',
                     'order' => 'viewCount',
                     'maxResults' => 5,
