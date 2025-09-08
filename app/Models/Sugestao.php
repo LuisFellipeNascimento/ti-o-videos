@@ -9,6 +9,6 @@ class Sugestao extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['youtube_link'];
+    protected $fillable = ['youtube_link','status'];
     protected $table = 'sugestoes';
 }

@@ -79,8 +79,8 @@ class SugestaoController extends Controller
         ]);
 
         $sugestao->update([
-            'youtube_link' => $request->youtube_link,
-            'status' => $request->status,
+            'youtube_link' => $request->input('youtube_link'),
+            'status' => $request->input('status'),
         ]);
 
         return redirect()->route('welcome')->with('success', 'Sugestão atualizada com sucesso!');

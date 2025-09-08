@@ -107,11 +107,20 @@ export default function Welcome({
                                     <div className="p-6 bg-white dark:bg-gray-800/50 rounded-lg shadow-md">
                                         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                                             {sugestoes.data.map((sugestao) => (
-                                                <li key={sugestao.id} className="py-3 flex justify-between items-center">
+                                                <li key={sugestao.id} className="py-3 flex flex-wrap justify-between items-center gap-2">
                                                     <div className="flex-1 min-w-0">
-                                                        <a href={sugestao.youtube_link} target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 hover:underline truncate block">
-                                                            {sugestao.youtube_link}
-                                                        </a>
+                                                        <div className="flex items-center gap-x-3">
+                                                            <a href={sugestao.youtube_link} target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 hover:underline truncate">
+                                                                {sugestao.youtube_link}
+                                                            </a>
+                                                            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
+                                                                ${sugestao.status === 'aprovado' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : ''}
+                                                                ${sugestao.status === 'pendente' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300' : ''}
+                                                                ${sugestao.status === 'rejeitado' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300' : ''}
+                                                            `}>
+                                                                {sugestao.status.charAt(0).toUpperCase() + sugestao.status.slice(1)}
+                                                            </span>
+                                                        </div>
                                                         <p className="text-sm text-gray-500 dark:text-gray-400">Sugerido em: {new Date(sugestao.created_at).toLocaleDateString()}</p>
                                                     </div>
                                                     {auth.user && (
