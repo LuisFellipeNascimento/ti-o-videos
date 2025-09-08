@@ -82,7 +82,7 @@ class SugestaoController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->route('sugestoes.gerenciar')->with('success', 'Sugestão atualizada com sucesso!');
+        return redirect()->route('welcome')->with('success', 'Sugestão atualizada com sucesso!');
     }
 
     /**
